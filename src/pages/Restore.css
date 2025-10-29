@@ -1,0 +1,152 @@
+.restore-page {
+  background-color: #000;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+  font-family: "Playfair Display", serif;
+  position: relative; /* ✅ 버튼 위치 기준 잡기 */
+}
+
+/* 헤더 */
+.restore-header {
+  margin-bottom: 40px;
+  position: relative; /* ✅ 버튼 포지션 기준 */
+  width: 100%;
+  text-align: center;
+}
+
+/* 🔹 제목 */
+.restore-title {
+  font-size: 2.3rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.restore-sub {
+  font-size: 1rem;
+  color: #aaa;
+}
+
+/* 🔹 ← 이전으로 버튼 */
+.back-btn {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.back-btn:hover {
+  color: #fff;
+  transform: translateX(-4px);
+}
+
+/* 🔹 로그아웃 버튼 */
+.logout-btn {
+  position: absolute;
+  top: 30px;
+  right: 40px;
+  background: none;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 7px 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+/* 업로드 박스 */
+.upload-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.upload-box {
+  border: 1px dashed #777;
+  border-radius: 12px;
+  padding: 50px 80px;
+  color: #bbb;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.upload-box:hover {
+  border-color: #fff;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 이미지 비교 */
+.comparison-container {
+  position: relative;
+  width: 80%;
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.image-wrapper img {
+  width: 100%;
+  display: block;
+  user-select: none;
+}
+
+.restored-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.slider-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background-color: #00e0c6;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px #00e0c6;
+}
+
+/* 버튼 */
+.restore-btn {
+  margin-top: 40px;
+  padding: 12px 32px;
+  border-radius: 30px;
+  border: 1px solid #888;
+  background: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restore-btn:hover {
+  background-color: #fff;
+  color: #000;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
