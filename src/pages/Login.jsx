@@ -1,25 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
-
+import LoginModal from "./LoginModal";
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
-
-  // ✅ 1. 회원정보 불러오기
-  useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
-    setUsers(storedUsers);
-  }, []);
-
-  // ✅ 2. 이미 로그인된 사용자는 로그인 페이지 접근 시 자동 리다이렉트
-  // useEffect(() => {
-  // const isLoggedIn = localStorage.getItem("userToken");
-  //if (isLoggedIn) {
-  // navigate("/restore"); // 이미 로그인된 경우 복원 페이지로
-  // }
+  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
+  //useEffect(() => {
+  //  const isLoggedIn = localStorage.getItem("userToken");
+  //  if (isLoggedIn) {
+  //    navigate("/main"); // 이미 로그인된 경우 main 페이지로 이동
+  //  }
   //}, [navigate]);
 
   // ✅ 3. 로그인 시도
