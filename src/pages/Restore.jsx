@@ -21,17 +21,26 @@ export default function Restore() {
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
-
     try {
-      const res = await colorizeImage(file); // API 호출
-      console.log("복원된 이미지:", res.data);
-
-      setRestoredImage(res.data.restored_image);
+      // const res = await colorizeImage(file); // API 호출
+      // console.log("복원된 이미지:", res.data);
+      // setRestoredImage(res.data.restored_image);
     } catch (err) {
       console.error("이미지 업로드 실패", err);
       alert("이미지 업로드 실패 ❌");
     }
   };
+
+  //   try {
+  //     const res = await colorizeImage(file); // API 호출
+  //     console.log("복원된 이미지:", res.data);
+
+  //     setRestoredImage(res.data.restored_image);
+  //   } catch (err) {
+  //     console.error("이미지 업로드 실패", err);
+  //     alert("이미지 업로드 실패 ❌");
+  //   }
+  // };
 
   // ✅ 로그인 & 로그아웃
   const handleLogin = () => {

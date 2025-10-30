@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../lib/api"; // ✅ API 연동
 import "./Login.css";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,7 +14,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await loginUser(email, password); // ✅ 백엔드 요청
+      const res = await axios.post("http://192.168.0.51:5000/api/auth/login", {
+        email,
+        password,
+      }); // ✅ 백엔드 요청
       console.log("로그인 성공:", res.data);
 
       // ✅ 토큰 저장
