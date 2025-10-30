@@ -1,65 +1,55 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../lib/api"; // ✅ 백엔드 API
 import "./Signup.css";
 
 export default function Signup() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [dob, setDob] = useState(""); // 생년월일 상태
-  const [gender, setGender] = useState(""); // 성별 상태
-  const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 여부
-  const [users, setUsers] = useState([]);
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState("");
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
-  // 이메일 인증 함수 (예시)
+  // ✅ 이메일 인증 placeholder
   const sendEmailVerification = () => {
-    alert("이메일 인증이 완료되었습니다 🎉");
-    setIsEmailVerified(true); // 이메일 인증 완료
+    alert("이메일 인증 완료 🎉");
+    setIsEmailVerified(true);
   };
 
-  // 회원가입 처리
-  const handleSubmit = (e) => {
+  // ✅ 회원가입 시도
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 비밀번호 확인
+    // ✅ 비밀번호 체크
     if (password !== confirmPassword) {
       alert("비밀번호가 일치하지 않습니다 ❌");
       return;
     }
 
-    // 이메일 인증 확인
+    // ✅ 이메일 인증 여부
     if (!isEmailVerified) {
       alert("이메일 인증이 필요합니다 ❌");
       return;
     }
 
-    const newUser = { email, password, fullName, phone, dob, gender };
+    try {
+      // ✅ 백엔드로 회원가입 요청
+      const res = await registerUser(email, password);
+      console.log("회원가입 성공:", res.data);
 
-    // 기존 유저 목록 불러오기
-    const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+      alert("회원가입 성공! ✅");
 
-    // 이미 존재하는 이메일 검사
-    const userExists = storedUsers.some((user) => user.email === email);
-
-    if (userExists) {
-      alert("이미 존재하는 이메일입니다 ❌");
-      return;
+      // ✅ 로그인 페이지로 이동
+      navigate("/login");
+    } catch (err) {
+      console.error("회원가입 실패", err);
+      alert("회원가입 실패 ❌");
     }
-
-    // 새 유저 추가 및 저장
-    const updatedUsers = [...storedUsers, newUser];
-    localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-    alert("회원가입 완료 🎉 자동으로 로그인됩니다.");
-
-    // ✅ 자동 로그인 상태 저장
-    localStorage.setItem("userToken", "true");
-    localStorage.setItem("userEmail", email);
-
-    navigate("/restore");
   };
 
   return (
@@ -70,7 +60,7 @@ export default function Signup() {
       </p>
 
       <form className="signup-form" onSubmit={handleSubmit}>
-        {/* 이름 (Full Name) */}
+        {/* 이름 */}
         <input
           type="text"
           placeholder="Full Name"
@@ -79,7 +69,7 @@ export default function Signup() {
           required
         />
 
-        {/* 이메일 (Email) */}
+        {/* 이메일 */}
         <input
           type="email"
           placeholder="Email address"
@@ -88,7 +78,7 @@ export default function Signup() {
           required
         />
 
-        {/* 비밀번호 (Password) */}
+        {/* 비밀번호 */}
         <input
           type="password"
           placeholder="Password"
@@ -97,7 +87,7 @@ export default function Signup() {
           required
         />
 
-        {/* 비밀번호 확인 (Confirm Password) */}
+        {/* 비밀번호 확인 */}
         <input
           type="password"
           placeholder="Confirm Password"
@@ -106,7 +96,7 @@ export default function Signup() {
           required
         />
 
-        {/* 전화번호 (Phone Number) */}
+        {/* 전화번호 */}
         <input
           type="tel"
           placeholder="Phone Number"
@@ -114,7 +104,7 @@ export default function Signup() {
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        {/* 생년월일 (Date of Birth) */}
+        {/* 생일 */}
         <input
           type="date"
           placeholder="Date of Birth"
@@ -123,7 +113,7 @@ export default function Signup() {
           required
         />
 
-        {/* 성별 (Gender) */}
+        {/* 성별 */}
         <div className="gender">
           <label>Gender:</label>
           <select
@@ -138,12 +128,11 @@ export default function Signup() {
           </select>
         </div>
 
-        {/* 이메일 인증 버튼 */}
+        {/* 이메일 인증 */}
         <button type="button" onClick={sendEmailVerification}>
           Send Email Verification
         </button>
 
-        {/* 이메일 인증 여부 확인 */}
         {isEmailVerified ? (
           <p className="verified">Email verified ✅</p>
         ) : (

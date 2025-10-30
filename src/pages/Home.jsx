@@ -78,7 +78,9 @@ export default function Home() {
         style={{ backgroundImage: `url(${images[currentImage]})` }}
       ></div>
       <div className="overlay"></div>
-
+      {/* <div className="home-test">
+        <Test />
+      </div> */}
       {/* Header */}
       <header className="top-header">
         <div

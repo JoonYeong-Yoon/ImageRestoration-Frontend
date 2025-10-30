@@ -96,6 +96,7 @@ html {
   display: flex;
   justify-content: flex-end; /* 버튼들을 오른쪽 끝으로 배치 */
   width: 100%;
+  margin-right: 10px;
 }
 .menu-btn:hover {
   background-color: #fff;
@@ -110,7 +111,7 @@ html {
 .center-content {
   text-align: center;
   max-width: 900px;
-  padding: 580px 20px; /*0 20px;*/
+  padding: 570px 20px; /*0 20px;*/
   transform: translateY(-65px);
   z-index: 2;
 }
@@ -168,4 +169,20 @@ html {
   .start-btn {
     padding: 10px 30px;
   }
+}
+
+.home-test {
+  font-size: 48px;
+}
+.home-test > div {
+  display: flex;
+  gap: 20px;
+}
+
+.center-content {
+  font-size: 14px;
+}
+
+.center-content > div {
+  flex-direction: column;
 }

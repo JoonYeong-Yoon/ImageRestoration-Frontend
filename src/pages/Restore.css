@@ -12,27 +12,24 @@
   padding-top: 20px;
   position: relative;
 }
-
-/* 헤더 */
+/* 주석은 Ctrl + / */
 .top-header {
-  margin-bottom: 10px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  padding: 20px;
   position: absolute;
-  top: 20px;
+  top: 0;
   left: 0;
-  right: 0;
-  padding: 0 20px;
 }
 
-/* 제목 */
-.restore-title {
+제목 .restore-title {
   font-size: 5rem;
   font-weight: 500;
   position: absolute;
-  left: 2px; /* 왼쪽으로 위치 이동 */
+  left: 70px; /* 왼쪽으로 위치 이동 */
 }
 
 .restore-sub {
@@ -44,6 +41,10 @@
   position: absolute;
   left: 20px; /* 왼쪽으로 정렬 */
 }
+.logo {
+  font-size: 1.2rem;
+  text-align: left;
+}
 
 /* 로그인/로그아웃 버튼 */
 .menu-btn {
@@ -54,7 +55,7 @@
   border: 1px solid #fff;
   border-radius: 25px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-right: 55px;
 }
 
 .menu-btn:hover {
@@ -68,9 +69,9 @@
 
 /* 업로드 박스 */
 .upload-box {
-  border: 1px dashed #777;
+  border: 2px dashed #777;
   border-radius: 12px;
-  padding: 50px 80px;
+  padding: 210px 80px;
   color: #bbb;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -80,4 +81,10 @@
   border-color: #fff;
   color: #fff;
   background-color: rgba(255, 255, 255, 0.05);
+}
+/* .main-title {
+  margin-top: -800px;
+} */
+.restore-page .center-content {
+  margin-top: -440px;
 }

@@ -1,37 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginUser } from "../lib/api"; // ✅ API 연동
 import "./Login.css";
-import LoginModal from "./LoginModal";
+
 export default function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
-  //useEffect(() => {
-  //  const isLoggedIn = localStorage.getItem("userToken");
-  //  if (isLoggedIn) {
-  //    navigate("/main"); // 이미 로그인된 경우 main 페이지로 이동
-  //  }
-  //}, [navigate]);
 
-  // ✅ 3. 로그인 시도
-  const handleSubmit = (e) => {
+  // ✅ 로그인 실행
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const foundUser = users.find(
-      (user) => user.email === email && user.password === password
-    );
+    try {
+      const res = await loginUser(email, password); // ✅ 백엔드 요청
+      console.log("로그인 성공:", res.data);
 
-    if (foundUser) {
-      alert("로그인 성공 🎉");
-
-      // ✅ 로그인 성공 시 localStorage에 저장
-      localStorage.setItem("userToken", "true");
+      // ✅ 토큰 저장
+      localStorage.setItem("userToken", res.data.token);
       localStorage.setItem("userEmail", email);
 
-      navigate("/main");
-    } else {
+      alert("로그인 성공! ✅");
+      navigate("/main"); // 로그인 후 이동
+    } catch (err) {
+      console.error("로그인 실패:", err);
       alert("이메일 또는 비밀번호가 틀렸습니다 ❌");
     }
   };
@@ -49,6 +41,7 @@ export default function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
+
         <input
           type="password"
           placeholder="Password"
@@ -56,6 +49,7 @@ export default function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+
         <button type="submit">Sign In</button>
       </form>
 
