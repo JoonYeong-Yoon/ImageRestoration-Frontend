@@ -20,6 +20,11 @@ export default function Signup() {
     alert("이메일 인증 완료 🎉");
     setIsEmailVerified(true);
   };
+  // const sendEmailVerification = async () => {
+  //   const res = await axios.post("/auth/send-email", { email });
+
+  //   alert("인증메일 전송 완료 ✅");
+  // };
 
   // ✅ 회원가입 시도
   const handleSubmit = async (e) => {
@@ -39,7 +44,8 @@ export default function Signup() {
 
     try {
       // ✅ 백엔드로 회원가입 요청
-      const res = await registerUser(email, password);
+      //console.log = 내부 기록 / alert = 화면 알림
+      const res = await registerUser(fullName, email, password);
       console.log("회원가입 성공:", res.data);
 
       alert("회원가입 성공! ✅");
@@ -96,15 +102,14 @@ export default function Signup() {
           required
         />
 
-        {/* 전화번호 */}
-        <input
+        {/* <input
           type="tel"
           placeholder="Phone Number"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-        />
+        /> */}
 
-        {/* 생일 */}
+        {/*        
         <input
           type="date"
           placeholder="Date of Birth"
@@ -113,7 +118,7 @@ export default function Signup() {
           required
         />
 
-        {/* 성별 */}
+      
         <div className="gender">
           <label>Gender:</label>
           <select
@@ -126,7 +131,7 @@ export default function Signup() {
             <option value="female">Female</option>
             <option value="other">Other</option>
           </select>
-        </div>
+        </div> */}
 
         {/* 이메일 인증 */}
         <button type="button" onClick={sendEmailVerification}>

@@ -8,8 +8,12 @@ export const loginUser = async (email, password) => {
 };
 
 // ✅ 회원가입 요청
-export const registerUser = async (email, password) => {
-  return await axios.post(`${BASE_URL}/auth/register`, { email, password });
+export const registerUser = async (fullName, email, password) => {
+  return await axios.post(`${BASE_URL}/auth/register`, {
+    fullName,
+    email,
+    password,
+  });
 };
 
 // ✅ 흑백 -> 컬러 이미지 변환 요청

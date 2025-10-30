@@ -91,14 +91,14 @@ html {
 .back-btn:hover {
   color: #fff;
 }
-input[type="date"] {
+/* input[type="date"] {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #fff;
   font-size: 16px;
   color: #333;
-}
+} */
 /* 회원가입 입력 필드 공통 스타일 */
 .signup-form input {
   background: none;
@@ -108,7 +108,7 @@ input[type="date"] {
   border-radius: 5px;
 }
 
-/* 날짜 입력 필드 스타일 */
+/* 날짜 입력 필드 스타일 
 input[type="date"] {
   padding: 8px;
   border: 1px solid #ccc;
@@ -116,4 +116,4 @@ input[type="date"] {
   background-color: #fff;
   font-size: 16px;
   color: #333;
-}
+} */
