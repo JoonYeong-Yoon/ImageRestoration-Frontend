@@ -1,3 +1,5 @@
+// src/lib/api.js (오류를 제거한 코드)
+
 import axios from "axios";
 
 const BASE_URL = "http://192.168.0.51:5000/api";
@@ -22,6 +24,16 @@ export const colorizeImage = async (file) => {
   formData.append("file", file);
 
   return await axios.post(`${BASE_URL}/image/colorize`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+// 🌟 사진 복원 요청 함수 (이전에 추가한 함수)
+export const restorePhoto = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+
+  return await axios.post(`${BASE_URL}/image/restore`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };

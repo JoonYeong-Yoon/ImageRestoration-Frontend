@@ -1,10 +1,10 @@
+// ✅ src/pages/Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loginUser } from "../lib/api"; // ✅ API 연동
+import { loginUser } from "../api/api"; // ✅ 백엔드 통신 함수 불러오기
 import "./Login.css";
-import axios from "axios";
 
-export default function Login() {
+export default function Login({ setIsLoggedIn }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,20 +14,14 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://192.168.0.51:5000/api/auth/login", {
-        email,
-        password,
-      }); // ✅ 백엔드 요청
-      console.log("로그인 성공:", res.data);
+      const res = await loginUser(email, password);
+      console.log("✅ 로그인 성공:", res.data);
 
-      // ✅ 토큰 저장
-      localStorage.setItem("userToken", res.data.token);
-      localStorage.setItem("userEmail", email);
-
-      alert("로그인 성공! ✅");
+      alert("로그인 성공! 🎉");
+      setIsLoggedIn(true);
       navigate("/main"); // 로그인 후 이동
     } catch (err) {
-      console.error("로그인 실패:", err);
+      console.error("❌ 로그인 실패:", err.response?.data);
       alert("이메일 또는 비밀번호가 틀렸습니다 ❌");
     }
   };

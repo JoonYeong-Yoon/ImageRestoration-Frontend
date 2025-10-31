@@ -22,17 +22,16 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} />
       <Route path="/signup" element={<Signup />} />
 
       {/* 로그인 상태에 따라 다른 페이지를 렌더링 */}
       <Route
         path="/main"
         element={isLoggedIn ? <MainLayout /> : <Navigate to="/login" />}
-      >
-        <Route path="colorize" element={<GrayscaleToColor />} />
-        <Route path="restore" element={<Restore />} />
-      </Route>
+      />
+      <Route path="/main/colorize" element={<GrayscaleToColor />} />
+      <Route path="/main/restore" element={<Restore />} />
 
       {/* 존재하지 않는 경로는 홈으로 리디렉션 */}
       <Route path="*" element={<Navigate to="/" replace />} />

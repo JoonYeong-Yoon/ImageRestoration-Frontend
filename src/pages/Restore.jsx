@@ -6,9 +6,7 @@ import "./Restore.css";
 
 export default function Restore() {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    localStorage.getItem("userToken") !== null
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [restoredImage, setRestoredImage] = useState(null);
 
   useEffect(() => {
