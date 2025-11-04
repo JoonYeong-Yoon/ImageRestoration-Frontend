@@ -1,10 +1,11 @@
+// src/pages/Login.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ wouter → react-router-dom
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../lib/AuthContext";
 import "../css/Login.css";
 
 export default function Login() {
-  const navigate = useNavigate(); // ✅ navigate 사용
+  const navigate = useNavigate();
   const { login, isLoading } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -16,24 +17,15 @@ export default function Login() {
     setError("");
 
     try {
-      // ✅ 입력값 상관없이 로그인 성공 처리
-      await login({
-        uid: "auto-user",
-        email: email || "guest@re-memory.com",
-      });
-
-      // ✅ 바로 /restore로 이동
-      navigate("/main");
-    } catch (e) {
-      setError("로그인 처리 중 오류가 발생했습니다.");
-      console.error("Login error:", e);
+      await login(email, password); // ✅ 백엔드 API 호출
+      navigate("/main"); // ✅ 로그인 성공 → 메인으로 이동
+    } catch (err) {
+      console.error("❌ 로그인 실패:", err);
+      setError("로그인 실패: " + err.message);
     }
   };
 
-  const handleSignup = () => {
-    console.log("Signup clicked. Redirecting to /signup (Temporary)");
-    setError("회원가입 기능은 아직 구현되지 않았습니다.");
-  };
+  const handleSignup = () => navigate("/signup");
 
   return (
     <div className="login-container min-h-screen flex flex-col justify-center items-center bg-black text-white p-4">

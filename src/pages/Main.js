@@ -1,25 +1,37 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/button";
-import { Palette, ImageIcon, Upload, ArrowLeft } from "lucide-react";
+import { Palette, ImageIcon, ArrowLeft } from "lucide-react";
+import { useAuth } from "../lib/AuthContext";
 import Colorize from "../components/Colorize";
 import Restore from "../components/Restore";
+
 export default function Main() {
   const navigate = useNavigate();
+  const { logout } = useAuth();
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [activeTab, setActiveTab] = useState("colorize");
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
-    if (tab === "colorize") console.log("탭 이동: /main/colorize");
-    else if (tab === "restore") console.log("탭 이동: /main/restore");
+    console.log(`탭 이동: /main/${tab}`);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/login");
+    } catch (err) {
+      console.error("❌ 로그아웃 오류:", err);
+    }
   };
 
   return (
     <div
       className="flex h-screen"
       style={{
-        backgroundColor: "#000", // 메인 배경
+        backgroundColor: "#000",
         color: "#eaeaea",
       }}
     >
@@ -32,7 +44,7 @@ export default function Main() {
         }}
       >
         <div className="p-6">
-          <h1 className="text-xl font-semibold mb-8 text-white">Image Lab</h1>
+          <h1 className="text-xl font-semibold mb-8 text-white">Re:Memory</h1>
 
           <nav className="space-y-2">
             <button
@@ -64,7 +76,7 @@ export default function Main() {
 
       {/* ✅ 오른쪽 메인 영역 */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* 헤더 */}
+        {/* 상단 헤더 */}
         <header
           className="shrink-0"
           style={{
@@ -73,18 +85,20 @@ export default function Main() {
           }}
         >
           <div className="px-6 py-4 flex items-center justify-between">
+            {/* 왼쪽 - 홈 버튼 */}
             <div className="flex items-center gap-4">
               <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Home
               </Button>
-              <h2 className="text-lg font-semibold text-white">Re:Memory</h2>
             </div>
+
+            {/* 오른쪽 - 로그아웃만 유지 ✅ */}
             <Button
               variant="outline"
               size="sm"
               className="text-white border-white/30 hover:bg-white/10"
-              onClick={() => console.log("Logout clicked")}
+              onClick={handleLogout}
             >
               Logout
             </Button>
@@ -93,15 +107,9 @@ export default function Main() {
 
         {/* 메인 콘텐츠 */}
         {activeTab === "colorize" ? (
-          <>
-            <Colorize
-              selectedImage={selectedImage}
-              setSelectedImage={setSelectedImage}
-            />
-          </>
+          <Colorize selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
         ) : (
           <Restore />
-          // <p className="text-white text-center mt-10">aaa</p>
         )}
       </div>
     </div>

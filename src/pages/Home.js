@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ 로그인 페이지 이동용
+import { useNavigate } from "react-router-dom";
 import { Button } from "../components/button";
+import { useAuth } from "../lib/AuthContext"; // ✅ 로그인 상태 감지용
 import "../css/home.css";
-import "../css/LoginModal.css"; // ✅ 대문자 주의
+import "../css/LoginModal.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { user, logout } = useAuth(); // ✅ 로그인 상태 및 로그아웃 기능 가져오기
+
   const [currentImage, setCurrentImage] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
@@ -18,19 +21,35 @@ const Home = () => {
     return () => clearInterval(interval);
   }, [images.length]);
 
-  // ✅ 복원 버튼 클릭 → 모달 띄우기
+  // ✅ “복원 시작” 버튼 클릭 시
   const handleBeginRestoration = () => {
-    setShowModal(true);
+    if (user) {
+      // 로그인 되어 있으면 바로 main으로 이동
+      navigate("/main");
+    } else {
+      // 로그인 안 되어 있으면 모달 표시
+      setShowModal(true);
+    }
   };
 
-  // ✅ 로그인 버튼 클릭 → 로그인 페이지로 이동
+  // ✅ 로그인 페이지로 이동
   const handleLogin = () => {
     setShowModal(false);
-    navigate("/login"); // 🔥 여기서 페이지 이동
+    navigate("/login");
   };
 
   // ✅ 모달 닫기
   const handleCloseModal = () => setShowModal(false);
+
+  // ✅ 로그인/로그아웃 버튼
+  const handleAuthClick = async () => {
+    if (user) {
+      await logout();
+      alert("로그아웃 되었습니다.");
+    } else {
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -38,9 +57,7 @@ const Home = () => {
       {images.map((img, index) => (
         <div
           key={index}
-          className={`background-slide ${
-            index === currentImage ? "active" : ""
-          }`}
+          className={`background-slide ${index === currentImage ? "active" : ""}`}
           style={{
             backgroundImage: `url(${img})`,
             backgroundSize: "cover",
@@ -59,9 +76,9 @@ const Home = () => {
           variant="outline"
           size="sm"
           className="border-white/30 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
-          onClick={() => console.log("Logout clicked")}
+          onClick={handleAuthClick}
         >
-          Logout
+          {user ? "Logout" : "Login"} {/* ✅ 로그인 상태에 따라 표시 */}
         </Button>
       </header>
 
