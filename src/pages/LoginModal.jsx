@@ -1,32 +1,29 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./LoginModal.css";
+import { useNavigate } from "react-router-dom"; // ✅ React Router 이동용 훅
+import "../css/LoginModal.css";
 
 export default function LoginModal({ showModal, onClose }) {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // ✅ 페이지 이동 함수 선언
 
-  // ✅ showModal=false면 렌더링 X
-  if (!showModal) return null;
+  if (!showModal) return null; // 모달이 안보일 때 렌더 안함
 
-  const goLogin = () => navigate("/login");
+  const handleLoginClick = () => {
+    onClose(); // 🔹 모달 닫기
+    navigate("/login"); // 🔹 로그인 페이지로 이동 (리로드 없이)
+  };
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
         <h2 className="modal-title">로그인이 필요합니다</h2>
+        <p className="modal-subtitle">서비스를 이용하려면 로그인해주세요.</p>
 
-        <p className="modal-text">
-          AI 복원 기능을 사용하려면 로그인 후 이용할 수 있습니다.
-        </p>
-
-        <div className="modal-actions">
-          <button className="modal-btn primary" onClick={goLogin}>
+        <div className="modal-buttons">
+          <button className="modal-btn login" onClick={handleLoginClick}>
             로그인
           </button>
-
-          {/* ✅ 닫기 버튼 */}
-          <button className="modal-btn secondary" onClick={onClose}>
-            X
+          <button className="modal-btn cancel" onClick={onClose}>
+            닫기
           </button>
         </div>
       </div>
