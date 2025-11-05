@@ -6,7 +6,7 @@ const Colorize = ({ selectedImage, setSelectedImage }) => {
   const fileInputRef = useRef(null);
   const [colorizedImage, setColorizedImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-
+  const [isChange, setIsChange] = useState(true);
   // ✅ 업로드된 파일 객체
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -30,11 +30,12 @@ const Colorize = ({ selectedImage, setSelectedImage }) => {
 
   // ✅ FastAPI 서버에 실제 요청 (FileResponse용)
   const handleConvert = async () => {
+    console.log("selectedModel", selectedModel);
     if (!selectedFile) {
       console.error("⚠️ 변환할 파일 객체가 없습니다. 이미지를 선택해 주세요.");
       return;
     }
-
+    setIsChange(true);
     setIsProcessing(true);
 
     try {
@@ -84,6 +85,7 @@ const Colorize = ({ selectedImage, setSelectedImage }) => {
   };
 
   const handleModelSelect = (model) => {
+    setIsChange(false);
     setSelectedModel(model);
     setDropdownOpen(false);
     console.log(`🎯 모델 선택됨: ${model}`);
@@ -177,31 +179,40 @@ const Colorize = ({ selectedImage, setSelectedImage }) => {
               >
                 다른 이미지 선택
               </Button>
-
-              {!colorizedImage && !isProcessing && (
-                <Button
-                  className="bg-blue-700 hover:bg-blue-800"
-                  onClick={handleConvert}
-                >
-                  변환
-                </Button>
-              )}
-
-              {colorizedImage && (
-                <Button
-                  className="bg-blue-700 hover:bg-blue-800"
-                  onClick={() => {
-                    const link = document.createElement("a");
-                    link.href = colorizedImage;
-                    link.download = `colorized_${
-                      selectedFile?.name || "image"
-                    }.png`;
-                    link.click();
-                  }}
-                >
-                  다운로드
-                </Button>
-              )}
+              <>
+                {!isChange ? (
+                  // 처리 중이면 항상 변환 버튼
+                  <Button
+                    className="bg-blue-700 hover:bg-blue-800"
+                    onClick={handleConvert}
+                  >
+                    변환
+                  </Button>
+                ) : !colorizedImage ? (
+                  // 처리 중이 아니고 colorizedImage 없으면 변환 버튼
+                  <Button
+                    className="bg-blue-700 hover:bg-blue-800"
+                    onClick={handleConvert}
+                  >
+                    변환
+                  </Button>
+                ) : (
+                  // 처리 중이 아니고 colorizedImage 있으면 다운로드 버튼
+                  <Button
+                    className="bg-blue-700 hover:bg-blue-800"
+                    onClick={() => {
+                      const link = document.createElement("a");
+                      link.href = colorizedImage;
+                      link.download = `colorized_${
+                        selectedFile?.name || "image"
+                      }.png`;
+                      link.click();
+                    }}
+                  >
+                    다운로드
+                  </Button>
+                )}
+              </>
 
               {/* 모델 선택 드롭다운 */}
               <div className="relative" ref={dropdownRef}>
