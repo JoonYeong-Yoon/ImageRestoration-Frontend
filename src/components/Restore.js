@@ -7,8 +7,12 @@ const Restore = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [restoredImage, setRestoredImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isChange, setIsChange] = useState(true);
 
-  // ✅ 모델 선택 관련 상태
+  // ✅ 파일 객체 저장
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  // ✅ 모델 선택 상태
   const [selectedModel, setSelectedModel] = useState("UNET");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -26,33 +30,35 @@ const Restore = () => {
 
   const handleUploadClick = () => fileInputRef.current?.click();
 
-  // ✅ FastAPI 서버에 복원 요청
+  // ✅ 복원 요청 (Blob 응답 처리)
   const handleConvert = async () => {
-    if (!selectedImage) return;
+    if (!selectedFile) {
+      console.error("⚠️ 복원할 파일이 없습니다.");
+      return;
+    }
+    setIsChange(true);
     setIsProcessing(true);
 
     try {
       const formData = new FormData();
-      const file = fileInputRef.current.files[0];
-      formData.append("file", file);
-      formData.append("model", selectedModel); // ✅ 선택된 모델 전달
+      formData.append("file", selectedFile);
+      formData.append("model", selectedModel);
 
-      console.log(`🧠 복원 모델 선택됨: ${selectedModel}`);
+      console.log(`🧠 선택된 복원 모델: ${selectedModel}`);
 
-      const response = await fetch("http://127.0.0.1:8000/api/image/restore", {
+      const response = await fetch("http://127.0.0.1:8000/api/images/restore", {
         method: "POST",
         body: formData,
       });
 
-      if (!response.ok) throw new Error("서버 응답 실패");
-      const data = await response.json();
+      if (!response.ok) throw new Error(`서버 응답 실패: ${response.status}`);
 
-      if (data.image_base64) {
-        setRestoredImage(`data:image/png;base64,${data.image_base64}`);
-        console.log(`✅ ${selectedModel} 모델 복원 완료`);
-      } else {
-        console.error("⚠️ 서버에서 이미지 데이터가 없습니다:", data);
-      }
+      // ✅ Blob으로 변환
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+
+      setRestoredImage(imageUrl);
+      console.log(`✅ ${selectedModel} 모델 복원 완료`);
     } catch (err) {
       console.error("❌ 복원 중 오류:", err);
     } finally {
@@ -63,6 +69,8 @@ const Restore = () => {
   const handleFileSelect = (e) => {
     const file = e.target.files?.[0];
     if (file) {
+      setSelectedFile(file);
+
       const reader = new FileReader();
       reader.onload = (event) => {
         setSelectedImage(event.target?.result);
@@ -73,11 +81,11 @@ const Restore = () => {
   };
 
   const handleModelSelect = (model) => {
+    setIsChange(false);
     setSelectedModel(model);
     setDropdownOpen(false);
     console.log(`🎯 모델 선택됨: ${model}`);
   };
-
   return (
     <main className="flex-1 overflow-auto bg-black text-gray-200">
       <div className="container mx-auto px-6 py-8 max-w-6xl">
