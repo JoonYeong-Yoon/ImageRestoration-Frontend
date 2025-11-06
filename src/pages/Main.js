@@ -68,7 +68,7 @@ export default function Main() {
               }`}
             >
               <ImageIcon className="w-4 h-4" />
-              <span> 사진 복원</span>
+              <span> 손상 복원</span>
             </button>
           </nav>
         </div>
@@ -107,7 +107,10 @@ export default function Main() {
 
         {/* 메인 콘텐츠 */}
         {activeTab === "colorize" ? (
-          <Colorize selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
+          <Colorize
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+          />
         ) : (
           <Restore />
         )}

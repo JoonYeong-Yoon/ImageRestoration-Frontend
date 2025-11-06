@@ -188,47 +188,25 @@ const Restore = () => {
               {restoredImage && (
                 <Button
                   className="bg-green-700 hover:bg-green-800"
-                  onClick={() => console.log("다운로드 클릭")}
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = restoredImage;
+                    link.download = `restored_${
+                      selectedFile?.name || "image"
+                    }.png`;
+                    link.click();
+                  }}
                 >
                   다운로드
                 </Button>
               )}
 
-              {/* ✅ 모델 선택 드롭다운 */}
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="flex items-center gap-1 px-3 py-2 border border-gray-600 rounded text-gray-300 hover:text-white text-sm"
-                >
-                  모델:{" "}
-                  <span className="text-green-400 font-medium">
-                    {selectedModel}
-                  </span>
-                  <ChevronDown
-                    size={16}
-                    className={`transition-transform ${
-                      dropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {dropdownOpen && (
-                  <div className="absolute bottom-10 left-0 w-32 bg-[#1a1a1a] border border-gray-700 rounded shadow-lg">
-                    {["UNET", "ECCV16"].map((model) => (
-                      <button
-                        key={model}
-                        onClick={() => handleModelSelect(model)}
-                        className={`block w-full text-left px-4 py-2 text-sm hover:bg-gray-700 ${
-                          selectedModel === model
-                            ? "text-white font-medium"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        {model}
-                      </button>
-                    ))}
-                  </div>
-                )}
+              {/* ✅ 모델 표시 박스 */}
+              <div className="px-3 py-2 border border-gray-600 rounded text-gray-300 text-sm">
+                모델:{" "}
+                <span className="text-green-400 font-medium">
+                  {selectedModel}
+                </span>
               </div>
             </div>
           </div>
